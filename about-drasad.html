@@ -249,18 +249,9 @@
             </div>
             <div class="section-title" style="margin-top:2em;">Achievements & Awards</div>
             <div class="awards-gallery">
-                <div class="award-card">
-                    <img src="images/Awards/IMPORTANT1.jpg" alt="Article 1">
-                    <h4>Article 1</h4>
-                </div>
-                <div class="award-card">
-                    <img src="images/Awards/IMPORTANT.jpg" alt="Awards">
-                    <h4>Awards</h4>
-                </div>
-                <div class="award-card">
-                    <img src="images/Awards/IMPORTANT2.jpg" alt="Article 2">
-                    <h4>Article 2</h4>
-                </div>
+                <div class="award-card"><img src="images/Awards/IMPORTANT1.jpg" alt="Article 1"><h4>Article 1</h4></div>
+                <div class="award-card"><img src="images/Awards/IMPORTANT.jpg" alt="Awards"><h4>Awards</h4></div>
+                <div class="award-card"><img src="images/Awards/IMPORTANT2.jpg" alt="Article 2"><h4>Article 2</h4></div>
             </div>
         </section>
 
@@ -268,6 +259,66 @@
         <footer>
             &copy; 2013-2024 <strong><a href="index.html">Unani Doctors</a></strong>. All Rights Reserved.
         </footer>
+
+        <!-- Lightbox Modal for Awards -->
+        <div id="lightbox-modal" style="display:none;position:fixed;z-index:9999;top:0;left:0;width:100vw;height:100vh;background:rgba(0,0,0,0.85);align-items:center;justify-content:center;">
+            <div id="lightbox-content" style="position:relative;max-width:90vw;max-height:90vh;display:flex;flex-direction:column;align-items:center;">
+                <button id="lightbox-close" aria-label="Close" style="position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.5);color:#fff;border:none;font-size:2em;border-radius:50%;width:40px;height:40px;cursor:pointer;z-index:2;">&times;</button>
+                <button id="lightbox-prev" aria-label="Previous" style="position:absolute;left:-50px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.5);color:#fff;border:none;font-size:2em;border-radius:50%;width:40px;height:40px;cursor:pointer;z-index:2;display:none;">&#8592;</button>
+                <img id="lightbox-img" src="" alt="" style="max-width:80vw;max-height:70vh;border-radius:var(--radius);box-shadow:var(--shadow);background:#fff;">
+                <button id="lightbox-next" aria-label="Next" style="position:absolute;right:-50px;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.5);color:#fff;border:none;font-size:2em;border-radius:50%;width:40px;height:40px;cursor:pointer;z-index:2;display:none;">&#8594;</button>
+                <div id="lightbox-caption" style="color:#fff;margin-top:1em;font-size:1.2em;text-align:center;"></div>
+            </div>
+        </div>
+
+        <script>
+        // Lightbox modal logic for awards-gallery
+        const awardImages = Array.from(document.querySelectorAll('.awards-gallery .award-card img'));
+        let awardIndex = -1;
+        function showAwardLightbox(index) {
+            if (index < 0 || index >= awardImages.length) return;
+            awardIndex = index;
+            const img = awardImages[index];
+            document.getElementById('lightbox-img').src = img.src;
+            document.getElementById('lightbox-img').alt = img.alt;
+            document.getElementById('lightbox-caption').textContent = img.nextElementSibling ? img.nextElementSibling.textContent : '';
+            document.getElementById('lightbox-modal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            document.getElementById('lightbox-close').focus();
+            // Show/hide prev/next
+            document.getElementById('lightbox-prev').style.display = (index > 0) ? 'block' : 'none';
+            document.getElementById('lightbox-next').style.display = (index < awardImages.length - 1) ? 'block' : 'none';
+        }
+        awardImages.forEach((img, idx) => {
+            img.style.cursor = 'pointer';
+            img.addEventListener('click', function() {
+                showAwardLightbox(idx);
+            });
+        });
+        function closeAwardLightbox() {
+            document.getElementById('lightbox-modal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+        document.getElementById('lightbox-close').onclick = closeAwardLightbox;
+        document.getElementById('lightbox-modal').onclick = function(e) {
+            if (e.target === this) closeAwardLightbox();
+        };
+        document.getElementById('lightbox-prev').onclick = function(e) {
+            e.stopPropagation();
+            if (awardIndex > 0) showAwardLightbox(awardIndex - 1);
+        };
+        document.getElementById('lightbox-next').onclick = function(e) {
+            e.stopPropagation();
+            if (awardIndex < awardImages.length - 1) showAwardLightbox(awardIndex + 1);
+        };
+        document.addEventListener('keydown', function(e) {
+            if (document.getElementById('lightbox-modal').style.display === 'flex') {
+                if (e.key === 'Escape' || e.key === 'Esc') closeAwardLightbox();
+                if (e.key === 'ArrowLeft' && awardIndex > 0) showAwardLightbox(awardIndex - 1);
+                if (e.key === 'ArrowRight' && awardIndex < awardImages.length - 1) showAwardLightbox(awardIndex + 1);
+            }
+        });
+        </script>
 
         <!-- Smooth Scroll JS -->
         <script>
