@@ -257,7 +257,8 @@
 
         <!-- Footer -->
         <footer>
-            &copy; 2013-2024 <strong><a href="index.html">Unani Doctors</a></strong>. All Rights Reserved.
+            &copy; 2013-<span id="current-year"></span> <strong><a href="index.html">Unani Doctors</a></strong>. All Rights Reserved.
+            <script>document.getElementById('current-year').textContent = new Date().getFullYear();</script>
         </footer>
 
         <!-- Simple Lightbox Modal -->
